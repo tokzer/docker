@@ -44,7 +44,7 @@ ENV PATH="/root/.cargo/bin:${PATH}"
 
 RUN rustup target add armv7-linux-androideabi
 RUN rustup target add aarch64-linux-android
-RUN rustup target add i868-linux-android
+# RUN rustup target add i868-linux-android
 RUN rustup target add x86_64-linux-android
 
 RUN cargo install cargo-quad-apk
