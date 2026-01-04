@@ -1,5 +1,5 @@
 # Use an appropriate base image with a recent open JDK (JDK 27 is the latest)
-FROM openjdk:27-ea-jdk-slim
+FROM amazoncorretto:25-jdk
 
 # Define environment variables for Android SDK
 ENV ANDROID_HOME="/opt/android"
@@ -9,13 +9,18 @@ ENV PATH="${PATH}:${ANDROID_HOME}/cmdline-tools/latest/bin:${ANDROID_HOME}/platf
 # Set non-interactive mode for sdkmanager to accept licenses automatically
 ENV DEBIAN_FRONTEND=noninteractive
 
+RUN uname -a
+
 # Install necessary system dependencies
-RUN apt-get update && apt-get install -y \
+RUN dnf update && dnf install -y \
     wget \
     unzip \
-    build-essential \
-    curl \
-    && rm -rf /var/lib/apt/lists/*
+    # curl \
+    gcc \
+    gcc-c++ \
+    make \
+    openssl \
+    openssl-devel
 
 SHELL ["/bin/bash", "-c"]
 
