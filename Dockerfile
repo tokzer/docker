@@ -1,15 +1,19 @@
 # Use an appropriate base image with a recent open JDK (JDK 27 is the latest)
 FROM amazoncorretto:25-jdk
 
+LABEL android="35" \
+      ndk="27.2.12479018" \
+      rust="latest" \
+      version="0.6.1"
+
 # Define environment variables for Android SDK
 ENV ANDROID_HOME="/opt/android"
 ENV ANDROID_SDK_ROOT="${ANDROID_HOME}"
+ENV NDK_HOME="${ANDROID_HOME}/ndk/27-2-12479018"
 ENV PATH="${PATH}:${ANDROID_HOME}/cmdline-tools/latest/bin:${ANDROID_HOME}/platform-tools"
 
 # Set non-interactive mode for sdkmanager to accept licenses automatically
 ENV DEBIAN_FRONTEND=noninteractive
-
-RUN uname -a
 
 # Install necessary system dependencies
 RUN dnf update && dnf install -y \
@@ -54,5 +58,6 @@ RUN rustup target add x86_64-linux-android
 
 RUN cargo install cargo-quad-apk
 
-# Optional: Set the working directory
-WORKDIR /app
+# Make directory for user code
+RUN mkdir /root/src
+WORKDIR /root/src
